@@ -31,7 +31,7 @@ class ValidatorTest extends TestCase {
 		$messages = [
 			'age.required' => 'Please fill age',
 			'email.email' => 'Please fill email',
-			"email.required" => "Vui long nhap email"
+			"email.required" => "Please abc"
 		];
 
 		$validator = new Validator($data, $rules, $messages);
