@@ -29,8 +29,8 @@ class ValidatorTest extends TestCase {
 			'email' => 'email|required'
 		];
 		$messages = [
-			'age.required' => 'Vui long nhap tuoi',
-			'email.email' => 'Vui long nhap dung dinh dang email',
+			'age.required' => 'Please fill age',
+			'email.email' => 'Please fill email',
 			"email.required" => "Vui long nhap email"
 		];
 
@@ -49,8 +49,8 @@ class ValidatorTest extends TestCase {
 			'email' => 'email|required'
 		];
 		$messages = [
-			'age.required' => 'Vui long nhap tuoi',
-			'email.email' => 'Vui long nhap dung dinh dang email'
+			'age.required' => 'Please fill age',
+			'email.email' => 'Please fill email'
 		];
 
 		$validator = new Validator($data, $rules, $messages);
@@ -69,8 +69,8 @@ class ValidatorTest extends TestCase {
 			'email' => 'email|required'
 		];
 		$messages = [
-			'age.required' => 'Vui long nhap tuoi',
-			'email.email' => 'Vui long nhap dung dinh dang email'
+			'age.required' => 'Please fill age',
+			'email.email' => 'Please fill email'
 		];
 
 		$validator = new Validator($data, $rules, $messages);
