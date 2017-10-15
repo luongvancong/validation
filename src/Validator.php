@@ -7,17 +7,52 @@ use Closure;
 
 class Validator {
 
+	/**
+	 * Data need to validate
+	 * @var array
+	 */
 	protected $data = array();
 
+	/**
+	 * Initial rules
+	 * @var array
+	 */
 	protected $initialRules = array();
+
+	/**
+	 * Convert rules
+	 * @var array
+	 */
 	protected $rules = [];
 
+	/**
+	 * Attributes
+	 * @var array
+	 */
 	protected $attributes = [];
 
+	/**
+	 * Initial messages
+	 * @var array
+	 */
 	protected $initialMessages = [];
+
+	/**
+	 * Convert messages
+	 * @var array
+	 */
 	protected $messages = [];
 
+	/**
+	 * Errors
+	 * @var array
+	 */
 	protected $errors = [];
+
+	/**
+	 * Custom validator
+	 * @var array
+	 */
 	protected $extensions = [];
 
 	public function __construct(array $data, array $rules, array $messages = array())
@@ -29,11 +64,22 @@ class Validator {
 		$this->setMessages($messages);
 	}
 
+	/**
+	 * Check validate passes
+	 * @return bool
+	 */
 	public function passes()
 	{
 		return $this->validate($this->data, $this->rules);
 	}
 
+
+	/**
+	 * Validate
+	 * @param  array  $data
+	 * @param  array  $rules
+	 * @return bool
+	 */
 	protected function validate(array $data, array $rules)
 	{
 		foreach($data as $key => $value) {
@@ -43,6 +89,10 @@ class Validator {
 		return empty($this->errors);
 	}
 
+	/**
+	 * Process rules and attributes
+	 * @param array $rules
+	 */
 	protected function setRules(array $rules)
 	{
 		foreach($rules as $key => $value) {
@@ -62,6 +112,10 @@ class Validator {
 		}
 	}
 
+	/**
+	 * Set messages
+	 * @param array $messages
+	 */
 	protected function setMessages(array $messages) {
 
 		foreach($messages as $key => $value) {
@@ -72,6 +126,12 @@ class Validator {
 
 	}
 
+	/**
+	 * Apply rule for one data with key and value
+	 * @param  mixed $key
+	 * @param  mixed $value
+	 * @return void
+	 */
 	protected function applyRule($key, $value) {
 		$rules = $this->rules[$key];
 		$attributes = $this->attributes[$key];
@@ -86,6 +146,11 @@ class Validator {
 		}
 	}
 
+	/**
+	 * Add error message
+	 * @param mixed $key
+	 * @param mixed $rule
+	 */
 	protected function addError($key, $rule) {
 		if(isset($this->messages[$key])) {
 			if( array_key_exists($rule, $this->messages[$key]) ) {
@@ -98,27 +163,54 @@ class Validator {
 		}
 	}
 
+	/**
+	 * Get an attribute
+	 * @param  mixed $key
+	 * @param  mixed $rule
+	 * @return array
+	 */
 	protected function getAttribute($key, $rule)
 	{
 		return array_key_exists($rule, $this->attributes[$key]) ? $this->attributes[$key][$rule] : array();
 	}
 
 
+	/**
+	 * Add a custom validation
+	 * @param string  $key
+	 * @param Closure $callback
+	 */
 	public function addExtension($key, Closure $callback)
 	{
 		$this->extensions[$key] = $callback;
 	}
 
+	/**
+	 * Get a custom validation handle by key
+	 * @param  string $key
+	 * @return Closure|null
+	 */
 	protected function getExtension($key)
 	{
 		return $this->hasExtension($key) ? $this->extensions[$key] : null;
 	}
 
+	/**
+	 * Check custom validation exist by key
+	 * @param  string  $key
+	 * @return boolean
+	 */
 	protected function hasExtension($key)
 	{
 		return array_key_exists($key, $this->extensions);
 	}
 
+	/**
+	 * Call a custom validation
+	 * @param  string $key
+	 * @param  array $parameters
+	 * @return mixed
+	 */
 	protected function callExtension($key, $parameters)
 	{
 		if($this->hasExtension($key)) {
