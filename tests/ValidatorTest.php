@@ -81,6 +81,20 @@ class ValidatorTest extends TestCase {
 		$this->assertTrue($validator->passes());
 	}
 
+	public function test_email()
+	{
+		$data = [
+			'email' => 'cong.itsoft@gmail.com'
+		];
+
+		$rules = [
+			'email' => 'email'
+		];
+
+		$validator = new Validator($data, $rules);
+		$this->assertTrue($validator->passes());
+	}
+
 	public function test_between()
 	{
 		$data = [
@@ -182,15 +196,20 @@ class ValidatorTest extends TestCase {
 	public function test_ip()
 	{
 		$data = [
-			'age' => '192.159.2.2'
+			'age' => '192.159.2.2',
+			'ip' => '1.2.2.2',
+			'name' => "123"
 		];
 		$rules = [
-			'age' => 'ip'
+			'age' => 'ip',
+			'name' => 'required'
 		];
 
 		$validator = new Validator($data, $rules);
 		$this->assertTrue($validator->passes());
+		$this->assertEmpty($validator->getErrors());
 	}
+
 
 	public function test_exception()
 	{

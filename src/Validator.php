@@ -73,6 +73,15 @@ class Validator {
 		return $this->validate($this->data, $this->rules);
 	}
 
+	/**
+	 * Get errors
+	 * @return array
+	 */
+	public function getErrors()
+	{
+		return $this->errors;
+	}
+
 
 	/**
 	 * Validate
@@ -133,15 +142,17 @@ class Validator {
 	 * @return void
 	 */
 	protected function applyRule($key, $value) {
-		$rules = $this->rules[$key];
-		$attributes = $this->attributes[$key];
-		foreach($rules as $rule) {
-			$callMethod = "validate".$this->snakeToCamelCase($rule);
+		if(isset($this->rules[$key])) {
+			$rules = $this->rules[$key];
+			$attributes = $this->attributes[$key];
+			foreach($rules as $rule) {
+				$callMethod = "validate".$this->snakeToCamelCase($rule);
 
-			$attribute = $this->getAttribute($key, $rule);
+				$attribute = $this->getAttribute($key, $rule);
 
-			if(! $this->$callMethod($attribute, $value)) {
-				$this->addError($key, $rule);
+				if(! $this->$callMethod($attribute, $value)) {
+					$this->addError($key, $rule);
+				}
 			}
 		}
 	}
