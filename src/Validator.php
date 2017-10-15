@@ -108,7 +108,7 @@ class Validator {
 			$rulesArray = explode('|', $value);
 
 			foreach($rulesArray as $rule) {
-				if(strpos($rule, ':')) {
+				if(false !== strpos($rule, ':')) {
 					$ruleArray = explode(':', $rule);
 					list($ruleName, $ruleParams) = $ruleArray;
 					$this->rules[$key][] = $ruleName;
