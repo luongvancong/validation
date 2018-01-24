@@ -35,7 +35,7 @@ class ValidatorTest extends TestCase {
 		];
 
 		$validator = new Validator($data, $rules, $messages);
-		$this->assertFalse($validator->passes());
+		$this->assertTrue($validator->fails());
 	}
 
 	public function test_passes()
@@ -73,10 +73,13 @@ class ValidatorTest extends TestCase {
 			'email.email' => 'Please fill email'
 		];
 
-		$validator = new Validator($data, $rules, $messages);
+		$validator = new Validator();
 		$validator->addExtension('bigger', function($attribue, $value) {
 			return $value > $attribue[0];
 		});
+		$validator->setData($data)
+				  ->setRules($rules)
+		          ->setMessages($messages);
 
 		$this->assertTrue($validator->passes());
 	}
@@ -208,6 +211,20 @@ class ValidatorTest extends TestCase {
 		$validator = new Validator($data, $rules);
 		$this->assertTrue($validator->passes());
 		$this->assertEmpty($validator->getErrors());
+	}
+
+
+	public function test_equals()
+	{
+		$data = [
+			'age' => 20
+		];
+		$rules = [
+			'age' => 'equals:20'
+		];
+
+		$validator = new Validator($data, $rules);
+		$this->assertTrue($validator->passes());
 	}
 
 

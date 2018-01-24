@@ -55,22 +55,53 @@ class Validator {
 	 */
 	protected $extensions = [];
 
-	public function __construct(array $data, array $rules, array $messages = array())
+	public function __construct(array $data = array(), array $rules = array(), array $messages = array())
 	{
 		$this->data = $data;
-		$this->initialRules = $rules;
-		$this->initialMessages = $messages;
 		$this->setRules($rules);
 		$this->setMessages($messages);
 	}
 
+
+	/**
+	 * Set data for validate
+	 * @param array $data
+	 * @return \BlackBear\Validation\Validator
+	 */
+	public function setData(array $data)
+	{
+		$this->data = $data;
+		return $this;
+	}
+
+
+	/**
+	 * Get data
+	 * @return array
+	 */
+	public function getData()
+	{
+		return $this->data;
+	}
+
+
 	/**
 	 * Check validate passes
-	 * @return bool
+	 * @return boolean
 	 */
 	public function passes()
 	{
-		return $this->validate($this->data, $this->rules);
+		return $this->validate();
+	}
+
+
+	/**
+	 * Check validate fails
+	 * @return boolean
+	 */
+	public function fails()
+	{
+		return !$this->passes();
 	}
 
 	/**
@@ -89,8 +120,10 @@ class Validator {
 	 * @param  array  $rules
 	 * @return bool
 	 */
-	protected function validate(array $data, array $rules)
+	protected function validate()
 	{
+		$data = $this->getData();
+
 		foreach($data as $key => $value) {
 			$this->applyRule($key, $value);
 		}
@@ -101,9 +134,11 @@ class Validator {
 	/**
 	 * Process rules and attributes
 	 * @param array $rules
+	 * @return \BlackBear\Validation\Validator
 	 */
-	protected function setRules(array $rules)
+	public function setRules(array $rules)
 	{
+		$this->initialRules = $rules;
 		foreach($rules as $key => $value) {
 			$rulesArray = explode('|', $value);
 
@@ -119,20 +154,24 @@ class Validator {
 				}
 			}
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Set messages
 	 * @param array $messages
+	 * @return \BlackBear\Validation\Validator
 	 */
-	protected function setMessages(array $messages) {
-
+	public function setMessages(array $messages) {
+		$this->initialMessages = $messages;
 		foreach($messages as $key => $value) {
 			$keyArray = explode('.', $key);
 			list($field, $rule) = $keyArray;
 			$this->messages[$field][$rule] = $value;
 		}
 
+		return $this;
 	}
 
 	/**
@@ -336,6 +375,17 @@ class Validator {
 				'regexp' => $attributes[0]
 			)
 		));
+	}
+
+	protected function validateEquals($attributes, $value)
+	{
+		if(is_array($value)) {
+			return count($value) == $attributes[0];
+		} else if(is_string($value)) {
+			return $value === strval($attributes[0]);
+		} else if(is_integer($value)) {
+			return $value === intval($attributes[0]);
+		}
 	}
 
 	protected function snakeToCamelCase($string)
