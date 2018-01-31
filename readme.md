@@ -114,4 +114,4 @@
 `equals`: equals:8
 
 
-**Unit test [tests folder]**(https://github.com/luongvancong/validation/blob/master/tests/ValidatorTest.php)**
+**[Unit test](https://github.com/luongvancong/validation/blob/master/tests/ValidatorTest.php)**
