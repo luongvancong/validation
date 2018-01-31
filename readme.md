@@ -67,15 +67,15 @@
 
 # Public method
 
-`setData`
+`setData(array $data)`
 
-`setRules`
+`setRules(array $rules)`
 
-`setMessages`
+`setMessages(array $messages)`
 
-`passes`
+`passes()`
 
-`fails`
+`fails()`
 
 # Default rules
 
