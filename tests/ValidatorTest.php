@@ -228,6 +228,23 @@ class ValidatorTest extends TestCase {
 	}
 
 
+	public function test_same()
+	{
+		$data = [
+			'age' => 20,
+			'age_re' => 20
+		];
+
+		$rules = [
+			'age' => 'required',
+			'age_re' => 'required|same:age'
+		];
+
+		$validator = new Validator($data, $rules);
+		$this->assertTrue($validator->passes());
+	}
+
+
 	public function test_exception()
 	{
 		$data = [

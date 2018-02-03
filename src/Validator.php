@@ -388,6 +388,15 @@ class Validator {
 		}
 	}
 
+
+	protected function validateSame($attributes, $value) {
+		if($value == $this->data[$attributes[0]]) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected function snakeToCamelCase($string)
 	{
 		$stringArray = explode('_', $string);
