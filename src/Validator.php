@@ -232,6 +232,7 @@ class Validator {
 	 */
 	public function addExtension($key, Closure $callback)
 	{
+		$key = $this->snakeToCamelCase($key);
 		$this->extensions[$key] = $callback;
 	}
 
@@ -410,7 +411,7 @@ class Validator {
 
 	public function __call($method, $parameters)
 	{
-		$rule = strtolower(substr($method, 8));
+		$rule = substr($method, 8);
 
 		if(isset($this->extensions[$rule])) {
 			return $this->callExtension($rule, $parameters);

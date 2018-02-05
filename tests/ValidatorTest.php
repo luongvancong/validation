@@ -65,7 +65,7 @@ class ValidatorTest extends TestCase {
 			'email' => 'cong.itsoft@gmail.com'
 		];
 		$rules = [
-			'age' => 'required|bigger:18',
+			'age' => 'required|bigger:18|add_rule_test|camCase',
 			'email' => 'email|required'
 		];
 		$messages = [
@@ -76,6 +76,12 @@ class ValidatorTest extends TestCase {
 		$validator = new Validator();
 		$validator->addExtension('bigger', function($attribue, $value) {
 			return $value > $attribue[0];
+		});
+		$validator->addExtension('add_rule_test', function ($attribute, $value) {
+			return true;
+		});
+		$validator->addExtension('camCase', function ($attribute, $value) {
+			return true;
 		});
 		$validator->setData($data)
 				  ->setRules($rules)
