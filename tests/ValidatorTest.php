@@ -102,6 +102,30 @@ class ValidatorTest extends TestCase {
 
 		$validator = new Validator($data, $rules);
 		$this->assertTrue($validator->passes());
+
+		// If email null then ignore it
+		$data = [
+			'email' => null
+		];
+
+		$rules = [
+			'email' => 'email'
+		];
+
+		$validator = new Validator($data, $rules);
+		$this->assertTrue($validator->passes());
+
+		// If email null then ignore it
+		$data = [
+			'email' => null
+		];
+
+		$rules = [
+			'email' => 'required|email'
+		];
+
+		$validator = new Validator($data, $rules);
+		$this->assertFalse($validator->passes());
 	}
 
 	public function test_between()

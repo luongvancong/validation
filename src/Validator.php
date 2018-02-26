@@ -189,8 +189,18 @@ class Validator {
 
 				$attribute = $this->getAttribute($key, $rule);
 
-				if(! $this->$callMethod($attribute, $value)) {
-					$this->addError($key, $rule);
+				// If rule is required, we run validate required rule
+				// else if isset value, we run validate with other rule
+				if($rule === 'required') {
+					if(! $this->$callMethod($attribute, $value)) {
+						$this->addError($key, $rule);
+					}
+				} else {
+					if($value) {
+						if(! $this->$callMethod($attribute, $value)) {
+							$this->addError($key, $rule);
+						}
+					}
 				}
 			}
 		}
